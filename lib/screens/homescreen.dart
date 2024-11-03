@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:movieapps/common/utils.dart';
+import 'package:movieapps/models/upcoming_model.dart';
+import 'package:movieapps/services/api_services.dart';
+import 'package:movieapps/widgets/movie_card_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -9,6 +12,16 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late Future<UpcomingMovieModel> upComingFuture;
+  late Future<UpcomingMovieModel> nowPlayingFuture;
+  ApiServices apiServices = ApiServices();
+  @override
+  void initState() {
+    super.initState();
+    upComingFuture = apiServices.getUpcomingMovies();
+    nowPlayingFuture = apiServices.getNowPlayingMovies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,8 +57,25 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ],
       ),
-      body: const Center(
-        child: Text("Hi Im homescreen"),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 220,
+              child: MovieCardWidget(
+                future: nowPlayingFuture,
+                headLineText: "Now playing",
+              ),
+            ),
+            SizedBox(
+              height: 220,
+              child: MovieCardWidget(
+                future: upComingFuture,
+                headLineText: "Upcoming Movies",
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
