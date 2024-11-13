@@ -40,7 +40,7 @@ class MovieCardWidget extends StatelessWidget {
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Image.network(
-                              "${imageUrl}${data[index].posterPath}"),
+                              "$imageUrl${data[index].posterPath}"),
                         );
                       }),
                 )
